@@ -1,0 +1,3 @@
+az storage account generate-sas --permissions racwdl --resource-types sco --services b --expiry 2018-12-31 --account-name ailsons --account-key T4mcivSoMOWqzZSWNlDvxuaspKJwOE90KTnBYkQH/ryDwtu1aC8r/pqezcE+sVR8OHOAzzEIlrQVbi+ZtF+K3w==
+
+"se=2018-12-31&sp=rwdlac&sv=2017-07-29&ss=b&srt=sco&sig=MheJ9TfD8ayBO1KfUsMfl/BS/OOnsNGCmbAsAtY73wk%3D"
