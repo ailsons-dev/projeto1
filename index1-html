@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <button id="create-button">Create Container</button>
+
+        <input type="file" id="fileinput" />
+        <button id="upload-button">Upload</button>
+
+        <button id="list-button">List</button>
+
+        <button id="delete-button">Delete</button>
+    </body>
+    <script src="scripts/azure-storage.blob.min.js"></script>
+    <script>
+        // Blob-related code goes here
+    </script>
+</html>
