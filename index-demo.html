@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <script type="text/javascript" src="scripts/bundle/azure-storage.blob.min.js"></script>
+
+    </head>
+    <body>
+        
+        <div class="container" style="background:gainsboro">        
+            <h1 class="page-header"> Demonstração - Blob Azure </h1>
+            https://ailsons.blob.core.windows.net
+        </div>
+        
+
+        <input type="button" name="list-button" id="list-button" value="Listar" class="btn btn-primary">
+        <div class="list-group">
+            <div id="lista"></div>
+        </div>
+
+        <br>        
+        <br>        
+
+        <input type="button" id="delete-button" value="Delete" class="btn btn-primary">
+        <div id="ArqExcluir">Selecione um arquivo da lista acima</div>
+        <div id="Mensagem2"></div>
+
+        <br>               
+        <input type="button" name="upload-button" id="upload-button" value="Upload" class="btn btn-primary">
+        <input type="file" id="fileinput"  />
+        <div id="Mensagem1"></div>
+        
+    </body>
+    
+    <script>
+        // Blob-related code goes here
+        const account = {
+            name: "ailsons",
+            sas: "se=2018-12-31&sp=rwdlac&sv=2017-07-29&ss=b&srt=sco&sig=MheJ9TfD8ayBO1KfUsMfl/BS/OOnsNGCmbAsAtY73wk%3D"
+        };
+
+        const blobUri = 'https://' + account.name + '.blob.core.windows.net';
+        const blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, account.sas);
+
+
+        document.getElementById('upload-button').addEventListener('click', () => {
+
+            const file = document.getElementById('fileinput').files[0];
+
+            blobService.createBlockBlobFromBrowserFile('pdfs', 
+                                                        file.name, 
+                                                        file, 
+                                                        (error, result) => {
+                                                            if(error) {
+                                                                // Handle blob error
+                                                            } else {
+                                                                console.log('Upload feito com sucesso');
+                                                                document.getElementById('Mensagem1').innerHTML = 'Upload feito com sucesso';
+                                                            }
+                                                        });
+
+        });
+
+        document.getElementById('list-button').addEventListener('click', () => {
+
+            blobService.listBlobsSegmented('pdfs', null, (error, results) => {
+                if (error) {
+                    // Handle list blobs error
+                } else {
+                    var s = "";
+                    var sAbreTag = "<a href='#' class='list-group-item list-group-item-action' onclick='selectArquivo(\"";
+                    var sOnclick = ' onclick=selectArquivo(';
+                    var sFechaTag = '</a> ';
+                    results.entries.forEach(blob => {
+                        console.log(blob.name);
+                        s +=  sAbreTag + blob.name + "\");'>" + blob.name + sFechaTag;
+                    });
+                    console.log(s);
+                    document.getElementById('lista').innerHTML = s;
+                    document.getElementById('Mensagem1').innerHTML = '';
+                    document.getElementById('Mensagem2').innerHTML = '';
+                }
+            });
+
+        });
+
+        document.getElementById('delete-button').addEventListener('click', () => {
+
+            var blobName = document.getElementById('ArqExcluir').innerHTML;
+            blobService.deleteBlobIfExists('pdfs', blobName, (error, result) => {
+                if (error) {
+                    // Handle delete blob error
+                } else {
+                    console.log('Blob deletado com sucesso');
+                    document.getElementById('Mensagem2').innerHTML = 'Blob deletado com sucesso';
+
+                }
+            });
+
+        });
+
+        function selectArquivo(sNomeArquivo){
+            document.getElementById('ArqExcluir').innerHTML = sNomeArquivo;
+        }
+
+    </script>
+</html>
