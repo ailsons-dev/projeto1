@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.ailsons.blob-azure</groupId>
   <artifactId>BlobAzureExample</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <name>BlobAzureExample</name>
   <description>BlobAzureExample</description>
 
@@ -15,7 +15,7 @@
  	<parent>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter-parent</artifactId>
-	    <version>2.0.0.RELEASE</version>
+	    <version>2.0.1.RELEASE</version>
 	    <relativePath /> <!-- lookup parent from repository -->
 	</parent>
 			
