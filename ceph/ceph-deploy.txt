@@ -1,0 +1,75 @@
+CEPH-DEPLOY
+-----------
+CENTOS7:
+## install subscription-manager
+wget -O /etc/yum.repos.d/epel-rhsm.repo http://repos.fedorapeople.org/repos/candlepin/subscription-manager/epel-subscription-manager.repo
+yum install subscription-manager -y
+
+http://docs.ceph.com/docs/master/start/quick-start-preflight/
+
+http://docs.ceph.com/docs/master/start/quick-ceph-deploy/ PURGE
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) NOPASSWD:ALL
+
+####ceph-deploy install node1 node2 node3
+RuntimeError: command returned non-zero exit status: 100
+
+
+wget -q -O- 'https://download.ceph.com/keys/release.asc' | sudo apt-key add -
+echo deb https://download.ceph.com/debian-luminous/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list
+
+wget -q https://download.ceph.com/debian-luminous/pool/main/c/ceph/ceph-common_12.2.8-1trusty_amd64.deb
+wget -q https://download.ceph.com/debian-luminous/pool/main/c/ceph/ceph-base_12.2.8-1trusty_amd64.deb
+wget -q https://download.ceph.com/debian-luminous/pool/main/c/ceph/ceph-osd_12.2.8-1trusty_amd64.deb
+wget -q https://download.ceph.com/debian-luminous/pool/main/c/ceph/ceph-mon_12.2.8-1trusty_amd64.deb
+wget -q https://download.ceph.com/debian-luminous/pool/main/c/ceph/librgw2_12.2.8-1trusty_amd64.deb
+wget -q https://download.ceph.com/debian-luminous/pool/main/c/ceph/python-rados_12.2.8-1trusty_amd64.deb
+wget -q https://download.ceph.com/debian-luminous/pool/main/c/ceph/radosgw-dbg_12.2.8-1trusty_amd64.deb
+
+Troubleshooting
+---------------
+ceph-osd-dbg_12.2.8-1trusty_amd64.deb
+
+wget -q https://download.ceph.com/debian-luminous/pool/main/c/ceph/ceph-osd-dbg_12.2.8-1trusty_amd64.deb
+
+The following packages have unmet dependencies:
+ ceph-osd : Depends: ceph-base (= 12.2.8-1trusty) but it is not installable
+            Depends: libaio1 (>= 0.3.93) but it is not going to be installed
+            Depends: libgoogle-perftools4 but it is not going to be installed
+            Depends: libibverbs1 (>= 1.1.2) but it is not going to be installed
+            Depends: libleveldb1 but it is not going to be installed
+            Depends: liblttng-ust0 but it is not going to be installed
+            Depends: librados2 but it is not going to be installed
+            Depends: libsnappy1 but it is not going to be installed
+            Recommends: ceph-common (= 12.2.8-1trusty) but it is not going to be installed
+ lvm2 : Depends: libdevmapper-event1.02.1 (>= 2:1.02.74) but it is not going to be installed
+        Depends: watershed (>= 2) but it is not going to be installed
+E: Unmet dependencies. Try 'apt-get -f install' with no packages (or specify a solution).
+
+--Add user
+sudo useradd -c "Samwise the Brave" -m -s /bin/bash sam
+sudo useradd -d /home/cephdp -m -s /bin/bash cephdp
+
+--Atualizado o authorized_keys com id_rsa.pub( public key) uma chave por linha
+--sudo nano /etc/ssh/sshd_config "PasswordAuthentication yes"
+sudo systemctl restart ssh
+sudo systemctl restart sshd
+
+
+ 
+--install with user
+ceph-deploy --username cephdp install ailsons5 --release luminous
+
+
+
+-- initial mon with overwrite
+##sudo usermod -a -G root cephdp
+##sudo chown -R cephdp:cephdp /var/lib/ceph -- permission 
+sudo iptables -A INPUT -p tcp --dport 6789 -j ACCEPT
+sudo iptables-save
+
+ceph-deploy --username cephdp --overwrite-conf mon create-initial 
+
+ceph-deploy --username cephdp admin node-monitor node-osd
+
+ceph-deploy --username cephdp osd create --data /dev/sdc node-osd

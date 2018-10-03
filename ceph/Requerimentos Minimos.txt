@@ -1,0 +1,30 @@
+Process 	Criteria 	Minimum Recommended
+ceph-osd 	Processor 	
+
+    1x 64-bit AMD-64
+    1x 32-bit ARM dual-core or better
+
+RAM 	~1GB for 1TB of storage per daemon
+Volume Storage 	1x storage drive per daemon
+Journal 	1x SSD partition per daemon (optional)
+Network 	2x 1GB Ethernet NICs
+ceph-mon 	Processor 	
+
+    1x 64-bit AMD-64
+    1x 32-bit ARM dual-core or better
+
+RAM 	1 GB per daemon
+Disk Space 	10 GB per daemon
+Network 	2x 1GB Ethernet NICs
+ceph-mds 	Processor 	
+
+    1x 64-bit AMD-64 quad-core
+    1x 32-bit ARM quad-core
+
+RAM 	1 GB minimum per daemon
+Disk Space 	1 MB per daemon
+Network 	2x 1GB Ethernet NICs
+
+Tip
+
+If you are running an OSD with a single disk, create a partition for your volume storage that is separate from the partition containing the OS. Generally, we recommend separate disks for the OS and the volume storage.
