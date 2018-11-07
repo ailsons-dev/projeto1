@@ -1,0 +1,86 @@
+group-devel-env
+node-app
+userapp/userApp*2018
+
+node-db
+userdb
+user*Db*2018
+
+Install
+-------
+sudo yum install java-1.8.0-openjdk
+sudo yum update
+sudo yum install unzip zip
+curl -s https://get.sdkman.io | bash
+source "/home/userapp/.sdkman/bin/sdkman-init.sh"
+sdk help
+sdk install springboot
+
+Apache e Tomcat
+---------------
+cd /usr/local
+# wget http://www-us.apache.org/dist/tomcat/tomcat-9/v9.0.12/bin/apache-tomcat-9.0.12.tar.gz
+# tar -xvf apache-tomcat-9.0.12.tar.gz
+# mv apache-tomcat-9.0.12 tomcat9
+
+# echo "export CATALINA_HOME="/usr/local/tomcat9"" >> ~/.bashrc
+# source ~/.bashrc
+
+ sudo chmod -R 777 /usr/local/tomcat9/bin
+
+# cd /usr/local/tomcat9/bin
+# ./startup.sh 
+
+sudo chmod -R 777 /usr/local/tomcat9
+
+# removido do /usr/local/tomcat9/webapps/manager/META-INF/context.xml
+<Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
+
+/usr/local/tomcat9/sudo cat /usr/local/tomcat9/conf/tomcat-users.xml
+<role rolename="tomcat"/>
+  <role rolename="admin-gui"/>
+  <role rolename="manager-gui"/>
+  <role rolename="manager-script"/>
+  <role rolename="manager-jmx"/>
+  <role rolename="manager-status"/>
+  <user username="admin" password="adm!n" roles="admin-gui"/>
+  <user username="tomcat" password="s3cret" roles="tomcat,manager-gui,manager-script,manager-jmx,manager-status"/>
+
+Problemas - TODO
+SSL - Tomcat
+------------
+keytool -genkey -alias ca-tomcat -keyalg RSA -keystore /etc/pki/keystore
+(senha:tomcat)
+
+keytool -certreq -keyalg RSA -alias ca-tomcat -file tomcat-ssl.csr -keystore /etc/pki/keystore
+
+
+NGINX - Instalação
+------------------
+yum install epel-release
+yum install nginx
+
+Maven
+-----
+wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+
+yum install -y apache-maven
+
+GIT Clone
+-----------
+git clone https://github.com/rafael-negrao/ccb-poc-cf.git
+
+mvn clean package
+
+(  sudo yum install java-1.8.0-openjdk-devel )
+
+mvn spring-boot:run
+
+Erro: Unable to find a suitable main class, please add a 'mainClass' property
+
+http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+
+
+
