@@ -76,11 +76,22 @@ mvn clean package
 
 (  sudo yum install java-1.8.0-openjdk-devel )
 
-mvn spring-boot:run
-
+#mvn spring-boot:run
 Erro: Unable to find a suitable main class, please add a 'mainClass' property
-
 http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
 
+mvn spring-boot:run -pl ccb-poc-cf-app -Drun.profiles=dev
 
+-- MariaDB ---
+root / toor
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'toor';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+CREATE USER 'root'@'%' IDENTIFIED BY 'toor'
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
 
+-- selinux ---
+sudo cat /var/log/audit/audit.log | grep nginx | grep denied | audit2allow -M mynginx
+( yum provides \*/audit2allow
+  yum install policycoreutils-python  )
+sudo semodule -i mynginx.pp
