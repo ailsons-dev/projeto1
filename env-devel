@@ -6,6 +6,16 @@ node-db
 userdb
 user*Db*2018
 
+node-jenkins
+userjenkins
+user@jenk2018
+
+#User jenkins:
+userdev /user@dev
+
+#token GitHub
+fcc3c2aac4b34e11e6b64f92baf19e0b0f4cc359
+
 Install
 -------
 sudo yum install java-1.8.0-openjdk
@@ -95,3 +105,24 @@ sudo cat /var/log/audit/audit.log | grep nginx | grep denied | audit2allow -M my
 ( yum provides \*/audit2allow
   yum install policycoreutils-python  )
 sudo semodule -i mynginx.pp
+
+
+--Jenkins Portas
+----------------
+sudo iptables -I INPUT 1 -p tcp --dport 8443 -j ACCEPT
+sudo iptables -I INPUT 1 -p tcp --dport 8080 -j ACCEPT
+sudo iptables -I INPUT 1 -p tcp --dport 443 -j ACCEPT
+sudo iptables -I INPUT 1 -p tcp --dport 80 -j ACCEPT
+
+sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 8443
+
+SSL
+---
+yum install openssl
+mkdir /etc/jenkins/ssl
+#openssl genrsa -out “/etc/jenkins/ssl/jenkis-cert.key” 2048
+openssl genrsa -des3 2048 > /etc/jenkins/ssl/jenkis-cert.key (jenkins)
+openssl req -new -key /etc/jenkins/ssl/jenkis-cert.key > /etc/jenkins/ssl/jenkis-csr.csr
+
+
